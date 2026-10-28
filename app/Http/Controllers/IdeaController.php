@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Idea;
+use Inertia\Inertia;
+use Inertia\Response;
+use Auth;
 
 class IdeaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        $ideas = Auth::user()->ideas()->get();
+        return Inertia::render('ideas', ['ideas' => $ideas]);
     }
 
     /**

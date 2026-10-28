@@ -18,7 +18,12 @@ class IdeaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'title' => fake()->sentence(),
+            'description' => fake()->paragraph(),
+            'status' => \App\IdeaStatus::COMPLETED,
+            'links' => [],
+            'created_at' => now(),
         ];
     }
 }

@@ -44,26 +44,38 @@ export function Navbar() {
                 </div>
 
                 {/* 2. Center: Desktop Navigation Links */}
-                <nav className="hidden items-center justify-center gap-6 text-sm font-medium md:flex">
-                    <Link
-                        href="/"
-                        className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
-                    >
-                        Overview
-                    </Link>
-                    <a
-                        href="#features"
-                        className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
-                    >
-                        Features
-                    </a>
-                    <a
-                        href="#workflow"
-                        className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
-                    >
-                        Workflow
-                    </a>
-                </nav>
+                
+                    <nav className="hidden items-center justify-center gap-6 text-sm font-medium md:flex">
+                        {!user ? (
+                            <>
+                                <Link
+                                    href="/"
+                                    className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                                >
+                                    Overview
+                                </Link>
+                                <a
+                                    href="#features"
+                                    className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                                >
+                                    Features
+                                </a>
+                                <a
+                                    href="#workflow"
+                                    className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                                >
+                                    Workflow
+                                </a>
+                            </>
+                        ) : (
+                            <Link
+                                href="/ideas"
+                                className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                            >
+                                Ideas
+                            </Link>
+                        )}
+                    </nav>
 
                 {/* 3. Right: Desktop Actions & Mobile Trigger */}
                 <div className="flex items-center justify-end gap-2.5">

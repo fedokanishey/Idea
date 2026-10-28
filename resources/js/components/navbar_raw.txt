@@ -1,0 +1,226 @@
+﻿import { Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import type { Auth } from '@/types/auth';
+
+export function Navbar() {
+    const page = usePage<{ auth?: Auth }>();
+    const user = page.props.auth?.user;
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    return (
+        <header className="border-border/60 bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur-md">
+            <div className="mx-auto grid h-16 max-w-7xl grid-cols-2 items-center px-4 sm:px-6 md:grid-cols-3 lg:px-8">
+                {/* 1. Left: Brand Logo */}
+                <div className="flex items-center justify-start">
+                    <Link
+                        href="/"
+                        className="group text-foreground flex items-center gap-2.5 font-semibold transition-opacity hover:opacity-90"
+                    >
+                        <span className="bg-primary text-primary-foreground shadow-primary/20 flex h-9 w-9 items-center justify-center rounded-xl shadow-sm">
+                            <svg
+                                className="h-5 w-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                                <path d="M9 18h6" />
+                                <path d="M10 22h4" />
+                            </svg>
+                        </span>
+                        <div className="flex flex-col">
+                            <span className="text-foreground text-base font-bold tracking-tight">
+                                IdeaFlow
+                            </span>
+                            <span className="text-muted-foreground font-mono text-[10px] tracking-widest uppercase">
+                                Workspace
+                            </span>
+                        </div>
+                    </Link>
+                </div>
+
+                {/* 2. Center: Desktop Navigation Links */}
+               <nav className="hidden items-center justify-center gap-6 text-sm font-medium md:flex">
+                     {!user && ( <Link
+                        href="/"
+                        className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                    >
+                        Overview
+                    </Link>
+                    <a
+                        href="#features"
+                        className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                    >
+                        Features
+                    </a>
+                    <a
+                        href="#workflow"
+                        className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                    >
+                        Workflow
+                    </a>
+                </nav>
+                ) : (
+                <nav className="hidden items-center justify-center gap-6 text-sm font-medium md:flex">
+                    <Link
+                        href="/ideas"
+                        className="text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 transition-colors"
+                    >
+                        Ideas
+                    </Link>
+                </nav>
+                ) 
+                }
+
+                {/* 3. Right: Desktop Actions & Mobile Trigger */}
+                <div className="flex items-center justify-end gap-2.5">
+                    {/* Desktop Auth Actions */}
+                    <div className="hidden items-center gap-2.5 md:flex">
+                        {user ? (
+                            <div className="flex items-center gap-3">
+                                <span className="text-muted-foreground text-sm">
+                                    Hello,{' '}
+                                    <strong className="text-foreground">
+                                        {user.name}
+                                    </strong>
+                                </span>
+                                <Button
+                                    href="/logout"
+                                    method="post"
+                                    as="button"
+                                    variant="outlined"
+                                    size="sm"
+                                >
+                                    Sign Out
+                                </Button>
+                            </div>
+                        ) : (
+                            <>
+                                <Button
+                                    href="/login"
+                                    variant="outlined"
+                                    size="sm"
+                                >
+                                    Sign In
+                                </Button>
+                                <Button
+                                    href="/register"
+                                    variant="primary"
+                                    size="sm"
+                                >
+                                    Register
+                                </Button>
+                            </>
+                        )}
+                    </div>
+
+                    {/* Mobile Hamburger Button */}
+                    <div className="flex md:hidden">
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setIsMobileMenuOpen(!isMobileMenuOpen)
+                            }
+                            aria-label="Toggle navigation menu"
+                            className="text-muted-foreground hover:bg-card hover:text-foreground rounded-lg p-2 focus:outline-none"
+                        >
+                            {isMobileMenuOpen ? (
+                                <svg
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            ) : (
+                                <svg
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                </svg>
+                            )}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Mobile menu dropdown */}
+            {isMobileMenuOpen && (
+                <div className="border-border bg-card/95 space-y-2 border-b px-4 pt-2 pb-4 md:hidden">
+                    <Link
+                        href="/"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-foreground hover:bg-background block rounded-lg px-3 py-2 text-base font-medium"
+                    >
+                        Overview
+                    </Link>
+                    <a
+                        href="#features"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-muted-foreground hover:bg-background hover:text-foreground block rounded-lg px-3 py-2 text-base font-medium"
+                    >
+                        Features
+                    </a>
+                    <a
+                        href="#workflow"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-muted-foreground hover:bg-background hover:text-foreground block rounded-lg px-3 py-2 text-base font-medium"
+                    >
+                        Workflow
+                    </a>
+                    <div className="border-border flex flex-col gap-2 border-t pt-3">
+                        {user ? (
+                            <Button
+                                href="/logout"
+                                method="post"
+                                as="button"
+                                variant="outlined"
+                                className="w-full text-center"
+                            >
+                                Sign Out
+                            </Button>
+                        ) : (
+                            <>
+                                <Button
+                                    href="/login"
+                                    variant="outlined"
+                                    className="w-full text-center"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    Sign In
+                                </Button>
+                                <Button
+                                    href="/register"
+                                    variant="primary"
+                                    className="w-full text-center"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    Register
+                                </Button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
+        </header>
+    );
+}
+

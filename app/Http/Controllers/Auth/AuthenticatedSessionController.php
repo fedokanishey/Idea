@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('home'))->with('success', 'You are logged in!');
+        return redirect()->route('ideas')->with('success', 'You are logged in!');
     }
 
     /**
